@@ -29,7 +29,7 @@ namespace CrystalQuartz.Core.SchedulerProviders
             {
                 properties = GetSchedulerProperties();
                 ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-                _scheduler = schedulerFactory.GetScheduler();
+                _scheduler = schedulerFactory.GetScheduler().Result;
                 InitScheduler(_scheduler);
             } 
             catch(Exception ex)

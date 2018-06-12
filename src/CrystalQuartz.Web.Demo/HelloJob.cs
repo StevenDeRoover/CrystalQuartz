@@ -1,13 +1,14 @@
 namespace CrystalQuartz.Web.Demo
 {
     using System;
+    using System.Threading.Tasks;
     using Quartz;
 
     public class HelloJob : IJob
     {
-        public void Execute(IJobExecutionContext context)
+        public Task Execute(IJobExecutionContext context)
         {
-            Console.WriteLine("Hello, CrystalQuartz!");
+            return Task.Run(() => Console.WriteLine("Hello world!"));
         }
     }
 }

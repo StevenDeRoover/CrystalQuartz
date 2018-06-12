@@ -1,9 +1,9 @@
 namespace CrystalQuartz.Web.Demo
 {
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
-    using Quartz.Collection;
 
     public class FakeProvider : StdSchedulerProvider
     {

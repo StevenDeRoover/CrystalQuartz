@@ -6,6 +6,7 @@
     using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
     using Quartz.Impl.Matchers;
+    using System.Linq;
 
     public class DeleteGroupCommand : AbstractOperationCommand<GroupInput>
     {
@@ -15,7 +16,7 @@
 
         protected override void PerformOperation(GroupInput input)
         {
-            var keys = Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(input.Group));
+            var keys = Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(input.Group)).Result;
             Scheduler.DeleteJobs(keys.ToList());
         }
     }

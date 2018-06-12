@@ -25,7 +25,7 @@ namespace CrystalQuartz.Core
             get
             {
                 var scheduler = _schedulerProvider.Scheduler;
-                var metadata = scheduler.GetMetaData();
+                var metadata = scheduler.GetMetaData().Result;
                 return new SchedulerData
                            {
                                Name = scheduler.SchedulerName,
@@ -35,7 +35,7 @@ namespace CrystalQuartz.Core
                                Status = GetSchedulerStatus(scheduler),
                                IsRemote = metadata.SchedulerRemote,
                                JobsExecuted = metadata.NumberOfJobsExecuted,
-                               JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
+                               JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Result.Count,
                                RunningSince = metadata.RunningSince.ToDateTime(),
                                SchedulerType = metadata.SchedulerType,
                            };
@@ -58,7 +58,7 @@ namespace CrystalQuartz.Core
 
             try
             {
-                job = scheduler.GetJobDetail(new JobKey(name, @group));
+                job = scheduler.GetJobDetail(new JobKey(name, @group)).Result;
             }
             catch (Exception)
             {
@@ -108,7 +108,7 @@ namespace CrystalQuartz.Core
                 return null;
             }
 
-            ITrigger trigger = scheduler.GetTrigger(key);
+            ITrigger trigger = scheduler.GetTrigger(key).Result;
             if (trigger == null)
             {
                 return null;
@@ -124,7 +124,7 @@ namespace CrystalQuartz.Core
                 return SchedulerStatus.Shutdown;
             }
 
-            var jobGroupNames = scheduler.GetJobGroupNames();
+            var jobGroupNames = scheduler.GetJobGroupNames().Result;
             if (jobGroupNames == null || jobGroupNames.Count == 0)
             {
                 return SchedulerStatus.Empty;
@@ -140,7 +140,7 @@ namespace CrystalQuartz.Core
 
         private static ActivityStatus GetTriggerStatus(string triggerName, string triggerGroup, IScheduler scheduler)
         {
-            var state = scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroup));
+            var state = scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroup)).Result;
             switch (state)
             {
                 case TriggerState.Paused:
@@ -163,7 +163,7 @@ namespace CrystalQuartz.Core
             var result = new List<TriggerGroupData>();
             if (!scheduler.IsShutdown)
             {
-                foreach (var groupName in scheduler.GetTriggerGroupNames())
+                foreach (var groupName in scheduler.GetTriggerGroupNames().Result)
                 {
                     var data = new TriggerGroupData(groupName);
                     data.Init();
@@ -180,7 +180,7 @@ namespace CrystalQuartz.Core
 
             if (!scheduler.IsShutdown)
             {
-                foreach (var groupName in scheduler.GetJobGroupNames())
+                foreach (var groupName in scheduler.GetJobGroupNames().Result)
                 {
                     var groupData = new JobGroupData(
                         groupName,
@@ -197,7 +197,7 @@ namespace CrystalQuartz.Core
         {
             var result = new List<JobData>();
 
-            foreach (var jobKey in scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
+            foreach (var jobKey in scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)).Result)
             {
                 result.Add(GetJobData(scheduler, jobKey.Name, groupName));
             }
@@ -215,7 +215,7 @@ namespace CrystalQuartz.Core
         private static IList<TriggerData> GetTriggers(IScheduler scheduler, string jobName, string group)
         {
             return scheduler
-                .GetTriggersOfJob(new JobKey(jobName, @group))
+                .GetTriggersOfJob(new JobKey(jobName, @group)).Result
                 .Select(trigger => GetTriggerData(scheduler, trigger))
                 .ToList();
         }
