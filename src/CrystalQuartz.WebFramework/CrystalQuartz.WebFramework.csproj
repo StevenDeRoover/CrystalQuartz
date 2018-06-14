@@ -62,6 +62,7 @@
     <Compile Include="Config\HandlerConfig.cs" />
     <Compile Include="HttpAbstractions\IRequest.cs" />
     <Compile Include="HttpAbstractions\IResponseRenderer.cs" />
+    <Compile Include="HttpAbstractions\NotAuthorizedResponse.cs" />
     <Compile Include="HttpAbstractions\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\AbstractFileRequestHandler.cs" />

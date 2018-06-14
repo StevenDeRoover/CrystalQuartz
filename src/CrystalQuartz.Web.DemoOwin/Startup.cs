@@ -14,7 +14,7 @@ namespace CrystalQuartz.Web.DemoOwin
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseCrystalQuartz(new FakeProvider());
+            app.UseCrystalQuartz(new FakeProvider(), new Application.CrystalQuartzOptions() { UseAuthentication = true, ValidateUser = (userName, password) => userName == "remsec" && password == "remsec" });
 
             ConfigureAuth(app);
 

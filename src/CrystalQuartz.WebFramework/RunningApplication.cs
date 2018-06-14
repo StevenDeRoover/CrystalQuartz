@@ -2,6 +2,7 @@
 {
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using CrystalQuartz.WebFramework.Request;
+    using System.Net;
 
     public class RunningApplication
     {
@@ -13,7 +14,7 @@
         }
 
         public void Handle(IRequest request, IResponseRenderer renderer)
-        {
+        {          
             foreach (IRequestHandler handler in _handlers)
             {
                 RequestHandlingResult result = handler.HandleRequest(request);
