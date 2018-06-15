@@ -16,7 +16,7 @@ namespace CrystalQuartz.Web
             var options = new CrystalQuartzOptions
             {
                 CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl
-            }; 
+            };
 
             ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
             ISchedulerDataProvider schedulerDataProvider = new DefaultSchedulerDataProvider(schedulerProvider);
@@ -29,11 +29,12 @@ namespace CrystalQuartz.Web
             RunningApplication = application.Run();
         }
 
+        public static void PreInit()
+        { }
+
         public void ProcessRequest(HttpContext context)
         {
-            RunningApplication.Handle(
-                new SystemWebRequest(context), 
-                new SystemWebResponseRenderer(context));
+            RunningApplication.Handle(new SystemWebRequest(context), new SystemWebResponseRenderer(context));
         }
 
         public virtual bool IsReusable

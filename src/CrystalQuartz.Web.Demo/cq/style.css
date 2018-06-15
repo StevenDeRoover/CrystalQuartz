@@ -1,0 +1,7 @@
+﻿.delete, .divider, .addTrigger, stopSchedulerButton {
+    display: none !important;
+}
+
+.jobsContainer:first-child {
+    margin-top:20px!important;
+}
